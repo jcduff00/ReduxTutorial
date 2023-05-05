@@ -1,5 +1,6 @@
-import Password from './Password';
-import './App.css';
+import Password from "./Password";
+import PasswordsList from "./PasswordsList";
+import "./App.css";
 
 function App() {
   return (

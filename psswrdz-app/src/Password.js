@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addPassword } from './passwordsSlice'
+import zxcvbn from 'zxcvbn';
 
 function generatePassword() {
   const str = 'ABCDEFGHIJKLMNOPQSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
@@ -21,9 +22,12 @@ function Password() {
   const dispatch = useDispatch()
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [passwordScore, setPasswordScore] = useState('');
   
   const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
+    const newPassword = event.target.value;
+    setPassword(newPassword);
+    setPasswordScore(zxcvbn(newPassword).score);
   };
 
   const handleNameChange = (event) => {
@@ -31,15 +35,19 @@ function Password() {
   };
 
   const handleGenerateClick = () => {
-    setPassword(generatePassword());
+    const newPassword = generatePassword();
+    setPassword(newPassword);
+    setPasswordScore(zxcvbn(newPassword).score);
   };
   
   const handleSaveClick = () => {
     dispatch(addPassword({name: name, password: password}));
     setPassword('');
     setName('');
+    setPasswordScore('');
   };
 
+  
   return (
     <div>
       <label htmlFor="name">Name:</label>
@@ -57,6 +65,7 @@ function Password() {
         onChange={handlePasswordChange}
         value={password} 
       />
+      <p>Password score: {passwordScore !== null ? passwordScore : 'N/A'}</p>
       <button onClick={handleGenerateClick}>Generate</button>
       <br />
       <button onClick={handleSaveClick}>Save</button>
@@ -64,4 +73,4 @@ function Password() {
   );
 }
 
-export default Password
+export default Password;
