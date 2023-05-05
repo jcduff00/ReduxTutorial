@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { addPassword } from './passwordsSlice'
-import zxcvbn from 'zxcvbn';
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addPassword } from "./passwordsSlice";
+import zxcvbn from "zxcvbn";
+import "./Password.css";
 
 function generatePassword() {
-  const str = 'ABCDEFGHIJKLMNOPQSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';
-  let password = '';
+  const str =
+    "ABCDEFGHIJKLMNOPQSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+  let password = "";
 
   function random(n) {
     return Math.floor(Math.random() * n);
@@ -19,11 +21,11 @@ function generatePassword() {
 }
 
 function Password() {
-  const dispatch = useDispatch()
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const [passwordScore, setPasswordScore] = useState('');
-  
+  const dispatch = useDispatch();
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [passwordScore, setPasswordScore] = useState("");
+
   const handlePasswordChange = (event) => {
     const newPassword = event.target.value;
     setPassword(newPassword);
@@ -39,36 +41,36 @@ function Password() {
     setPassword(newPassword);
     setPasswordScore(zxcvbn(newPassword).score);
   };
-  
+
   const handleSaveClick = () => {
-    dispatch(addPassword({name: name, password: password}));
-    setPassword('');
-    setName('');
-    setPasswordScore('');
+    dispatch(addPassword({ name: name, password: password }));
+    setPassword("");
+    setName("");
+    setPasswordScore("");
   };
 
-  
   return (
-    <div>
+    <div className="password-container">
       <label htmlFor="name">Name:</label>
-      <input 
-        id="name"
-        type="text"
-        onChange={handleNameChange}
-        value={name}
-      />
+      <input id="name" type="text" onChange={handleNameChange} value={name} />
       <br />
       <label htmlFor="password">Password:</label>
-      <input 
+      <input
         id="password"
         type="text"
         onChange={handlePasswordChange}
-        value={password} 
+        value={password}
       />
-      <p>Password score: {passwordScore !== null ? passwordScore : 'N/A'}</p>
-      <button onClick={handleGenerateClick}>Generate</button>
+      <p className="password-score">
+        Password score: {passwordScore !== null ? passwordScore : "N/A"}
+      </p>
+      <button onClick={handleGenerateClick}>
+        Generate
+      </button>
       <br />
-      <button onClick={handleSaveClick}>Save</button>
+      <button onClick={handleSaveClick}>
+        Save
+      </button>
     </div>
   );
 }
