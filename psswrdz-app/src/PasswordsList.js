@@ -1,15 +1,17 @@
-import { useSelector } from 'react-redux'
+import { useSelector } from "react-redux";
 
 function PasswordsList() {
-  const passwords = useSelector(state => state.passwords.value)
+  const passwords = useSelector((state) => state.passwords.value);
 
   return (
     <ul>
-      {passwords.map(password => (
-        <li>{password}</li>
+      {passwords.map((password, i) => (
+        <li key={`${i}-item`}>
+          {password.name} : {password.password}
+        </li>
       ))}
     </ul>
-  )
+  );
 }
 
-export default PasswordsList
+export default PasswordsList;
